@@ -66,8 +66,8 @@ INDIDEVICEPORT="/dev/ttyUSB0"
 
 #2). Debug
 #Swap for indi output
-EXECNOOUTPUT="&>/dev/null"
-#EXECNOOUTPUT=""
+#EXECNOOUTPUT="&>/dev/null"
+EXECNOOUTPUT=""
 #Uncomment for verbose output. ' -v', ' -vv' and ' -vvv' is valid
 #INDIVERBOSE=" -vv"
 
@@ -81,7 +81,7 @@ SSHUSERNAME="magnus_e"
 
 #2). Indi startup
 INDIFIFODIR="/tmp/INDIFIFO"
-METEOSTATIONSKELETONDIR="/usr/local/share/indi/meteostation_sk.xml"
+METEOSTATIONSKELETONDIR="/usr/share/indi/meteostation_sk.xml"
 KILLEXEC="killall indiserver"
 INDIEXEC="indiserver$INDIVERBOSE -f $INDIFIFODIR -p"
 DUINOEXEC="echo start indi_duino -n \\\"$INDIDEVICE\\\" -s \\\"$METEOSTATIONSKELETONDIR\\\" > $INDIFIFODIR"
@@ -110,17 +110,16 @@ INDIREMOTEEXEC="$SSH -fN -o ExitOnForwardFailure=yes $SSHTUNNEL"
 UPDATE="cron"
 
 ##### SITE RELATED ####
-OWNERNAME="Magnus W. Eriksen"
-SITENAME="Observatory17b.com"
-ALTITUDE=10
+OWNERNAME="Sterne-Jäger"
+SITENAME="Hessental LG10"
+ALTITUDE=380
 #Visit http://weather.uwyo.edu/upperair/sounding.html
 #See the sounding location close your site
-SOUNDINGSTATION="ENZV"
+SOUNDINGSTATION="10739"
 
 ##### RRD RELATED #####
 #PATH TO GRAPHs
-CHARTPATH="./html/CHART/"
-RRDFILE="./meteo.rrd"
+CHARTPATH="/var/www/html/meteo/CHART/"
 #EUMETSAT lastimagen. Choose one from:
 #http://oiswww.eumetsat.org/IPPS/html/latestImages.html
 #This is nice but only work at daylight time:
