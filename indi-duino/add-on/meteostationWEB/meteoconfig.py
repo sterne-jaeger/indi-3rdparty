@@ -125,7 +125,7 @@ CHARTPATH="/var/www/html/meteo/CHART/"
 #This is nice but only work at daylight time:
 #EUMETSAT_LAST="http://oiswww.eumetsat.org/IPPS/html/latestImages/EUMETSAT_MSG_RGBNatColour_WesternEurope.jpg"
 #This show rain
-EUMETSAT_LAST="http://oiswww.eumetsat.org/IPPS/html/latestImages/EUMETSAT_MSG_MPE_WesternEurope.png"
+EUMETSAT_LAST="https://eumetview.eumetsat.int/static-images/latestImages/EUMETSAT_MSGIODC_MPE_Europe.png"
 #and this cloud cover at IR 39. Work at night
 #EUMETSAT_LAST="http://oiswww.eumetsat.org/IPPS/html/latestImages/EUMETSAT_MSG_IR039_WesternEurope.jpg"
 
