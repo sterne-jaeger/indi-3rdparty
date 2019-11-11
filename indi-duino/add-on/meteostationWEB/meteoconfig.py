@@ -119,7 +119,7 @@ SOUNDINGSTATION="10739"
 
 ##### RRD RELATED #####
 #PATH TO GRAPHs
-CHARTPATH="/var/www/html/meteo/CHART/"
+CHARTPATH="/usr/local/share/meteoweb/html/CHART/"
 #EUMETSAT lastimagen. Choose one from:
 #http://oiswww.eumetsat.org/IPPS/html/latestImages.html
 #This is nice but only work at daylight time:
