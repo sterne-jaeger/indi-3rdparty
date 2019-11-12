@@ -60,4 +60,3 @@ def readData():
     weatherStatus.update(getWeatherStatus(indi))
 
     indi.quit()
-
