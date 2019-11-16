@@ -102,10 +102,10 @@
 /*
  * Pin settings
  */
- #define PIN_STATUS_CLOUDY   3
+ #define PIN_STATUS_CLOUDY   6
  #define PIN_STATUS_DEW      4
  #define PIN_STATUS_FREZZY   5
- #define PIN_STATUS_DAYLIGHT 6
+ #define PIN_STATUS_DAYLIGHT 3
 
 /*
    Firmata is a generic protocol for communicating with microcontrollers
