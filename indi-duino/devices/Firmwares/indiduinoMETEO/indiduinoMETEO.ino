@@ -27,11 +27,11 @@
 // Comment out if your setup don't include some sensor.Some sensor combinations are exclusive; BME280 replaces both 
 // DHT and BMP series sensors, TSL replaces the irradiance sensor but could be used alongside it is the firmware is
 // modified appropriately.
-//#define USE_DHT_SENSOR          //USE DHT HUMITITY SENSOR. Comment if not.
+#define USE_DHT_SENSOR          //USE DHT HUMITITY SENSOR. Comment if not.
 #define USE_MLX_SENSOR            //USE MELEXIS IR SENSOR. Comment if not.
-#define USE_BME_SENSOR            //USE BME280 ENVIRONMENT SENSOR. Comment if not.
-#define USE_TSL_SENSOR            //USE TSL2591 SENSOR. Comment if not.
-//#define USE_P_SENSOR            //USE BMP085 PRESSURE SENSOR. Comment if not.
+//#define USE_BME_SENSOR            //USE BME280 ENVIRONMENT SENSOR. Comment if not.
+//#define USE_TSL_SENSOR            //USE TSL2591 SENSOR. Comment if not.
+#define USE_P_SENSOR            //USE BMP085 PRESSURE SENSOR. Comment if not.
 //#define USE_IRRADIANCE_SENSOR   //USE IRRADIANCE SENSOR (solar cell). Comment if not.
 
 #if defined USE_P_SENSOR && defined USE_BME_SENSOR
