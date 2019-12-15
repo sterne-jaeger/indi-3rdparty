@@ -62,7 +62,8 @@ INDIPORT="7624"
 ##### INDI SETTINGS AND DEBUG #####
 #1). Basic indi
 INDIDEVICE="Arduino MeteoStation"
-INDIDEVICEPORT="/dev/ttyUSB0"
+INDIDEVICEPORT="/dev/ttyACM0"
+#INDIDEVICEPORT="/dev/ttyUSB0"
 
 #2). Debug
 #Swap for indi output
@@ -81,7 +82,7 @@ SSHUSERNAME="magnus_e"
 
 #2). Indi startup
 INDIFIFODIR="/tmp/INDIFIFO"
-METEOSTATIONSKELETONDIR="/usr/share/indi/meteostation_sk.xml"
+METEOSTATIONSKELETONDIR="/usr/share/indi/meteostationSQM_sk.xml"
 KILLEXEC="killall indiserver"
 INDIEXEC="indiserver$INDIVERBOSE -f $INDIFIFODIR -p"
 DUINOEXEC="echo start indi_duino -n \\\"$INDIDEVICE\\\" -s \\\"$METEOSTATIONSKELETONDIR\\\" > $INDIFIFODIR"
