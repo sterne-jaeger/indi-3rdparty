@@ -16,7 +16,7 @@ IFS='%'
 #by defining INDISERVER as localhost,
 #and leaving INDITUNNEL="false",
 #then indiserver will be started locally on port INDIPORT
-INDISERVER="localhost"
+INDISERVER="rasp-indi"
 INDITUNNEL="false"
 INDISTARTREMOTE="false"
 INDIPORT="7624"
