@@ -1,4 +1,4 @@
-#!/usr/bin/python
+1#!/usr/bin/python
 #-*- coding: iso-8859-15 -*-
 # INDUINO METEOSTATION
 # http://induino.wordpress.com 
@@ -42,7 +42,7 @@ def graphs(time):
 	ret = rrdtool.graph( CHARTPATH+"temp"+str(time)+".png","--start","-"+str(time)+"h","-E",
           preamble,
 	 "--title","Temperature",
-	 "--vertical-label=Celsius ºC",
+	 "--vertical-label=Celsius C",
 	 "DEF:T="+RRDFILE+":T:AVERAGE",
 	 "DEF:Tmax="+RRDFILE+":T:MAX",
 	 "DEF:Tmin="+RRDFILE+":T:MIN",
@@ -56,7 +56,7 @@ def graphs(time):
 	ret = rrdtool.graph( CHARTPATH+"alltemp"+str(time)+".png","-A","--start","-"+str(time)+"h","-E",
           preamble,
 	 "--title","Temperaturas",
-	 "--vertical-label=Celsius ºC",
+	 "--vertical-label=Celsius C",
 	 "DEF:IR="+RRDFILE+":IR:AVERAGE",
 	 "DEF:Thr="+RRDFILE+":Thr:AVERAGE",
 	 "DEF:Tp="+RRDFILE+":Tp:AVERAGE",
@@ -125,7 +125,7 @@ def graphs(time):
 	ret = rrdtool.graph( CHARTPATH+"skyT"+str(time)+".png","--start","-"+str(time)+"h","-E",
           preamble,
 	 "--title","Sky Temperatures",
-	 "--vertical-label=Celsius ºC",
+	 "--vertical-label=Celsius C",
 	 "DEF:skyT="+RRDFILE+":skyT:AVERAGE",
 	 "DEF:IR="+RRDFILE+":IR:AVERAGE",
 	 "DEF:Thr="+RRDFILE+":Thr:AVERAGE",
@@ -143,11 +143,11 @@ def recv_indi(indi):
 	tim=time.localtime()
         vectorHR=indi.get_vector(INDIDEVICE,SENSOR_HUMIDITY)
 	HR=vectorHR.get_element(SENSOR_HUMIDITY_HUM).get_float()
-	Thr=vectorHR.get_element(SENSOR_HUMIDITY_TEMP).get_float()
+        Thr=vectorHR.get_element(SENSOR_HUMIDITY_TEMP).get_float()
 
         vectorPressure=indi.get_vector(INDIDEVICE, SENSOR_PRESSURE)
 	P=vectorPressure.get_element(SENSOR_PRESSURE_PRES).get_float()
-	Tp=vectorPressure.get_element(SENSOR_PRESSURE_TEMP).get_float()
+        Tp=vectorPressure.get_element(SENSOR_PRESSURE_TEMP).get_float()
 
         vectorIR=indi.get_vector(INDIDEVICE, SENSOR_IR)
 	IR=vectorIR.get_element(SENSOR_IR_IR).get_float()
@@ -167,7 +167,7 @@ def recv_indi(indi):
 	dewFlag=int(statusVector.get_element(WEATHER_STATUS_DEW).is_alert())
 	frezzingFlag=int(statusVector.get_element(WEATHER_STATUS_TEMP).is_alert())
   
-	return (("HR",HR),("Thr",Thr),("IR",IR),("Tir",Tir),("P",P),("Tp",Tp),("Dew",dew),("SQM",sqm),
+        return (("HR",HR),("Thr",Thr),("IR",IR),("Tir",Tir),("P",P),("Tp",Tp),("Dew",dew),("SQM",sqm),
            ("T",T),("clouds",clouds),("skyT",skyT),("cloudFlag",cloudFlag),("dewFlag",dewFlag),
            ("frezzingFlag",frezzingFlag))
 
