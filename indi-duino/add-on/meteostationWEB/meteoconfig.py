@@ -17,7 +17,8 @@ IFS='%'
 #and leaving INDITUNNEL="false",
 #then indiserver will be started locally on port INDIPORT
 #INDISERVER="rasp-indi"
-INDISERVER="rasp-weather"
+#INDISERVER="rasp-weather"
+INDISERVER="localhost"
 INDITUNNEL="false"
 INDISTARTREMOTE="false"
 INDIPORT="7624"
