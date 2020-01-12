@@ -722,12 +722,24 @@ bool WeatherRadio::sendQuery(const char* cmd, char* response, int *length)
 ***************************************************************************************/
 bool WeatherRadio::Connect()
 {
-    return INDI::Weather::Connect();
+    bool rc = INDI::Weather::Connect();
+    if (rc)
+        LOGF_INFO("%s connected successfully.", getDefaultName());
+    else
+        LOGF_WARN("%s connection failed!", getDefaultName());
+
+    return rc;
 }
 
 bool WeatherRadio::Disconnect()
 {
-    return INDI::Weather::Disconnect();
+    bool rc = INDI::Weather::Disconnect();
+    if (rc)
+        LOGF_INFO("%s disconnected successfully.", getDefaultName());
+    else
+        LOGF_WARN("%s disconnect failed!", getDefaultName());
+
+    return rc;
 }
 
 const char *WeatherRadio::getDefaultName()
