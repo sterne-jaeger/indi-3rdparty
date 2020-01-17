@@ -36,52 +36,42 @@ preamble=["--width","600",
 	 "--color", "SHADEA#00000000",
 	 "--color", "SHADEB#00000000",
 	 "--color", "BACK#00000000",
-	 "--color", "CANVAS#00000000"]
+         "--color", "CANVAS#00000000"]
 
 def graphs(time):
 	ret = rrdtool.graph( CHARTPATH+"temp"+str(time)+".png","--start","-"+str(time)+"h","-E",
           preamble,
 	 "--title","Temperature and Dew Point",
-	 "--vertical-label=Celsius ºC",
+	 "--vertical-label=Celsius C",
 	 "DEF:T="+RRDFILE+":T:AVERAGE",
-	 "DEF:Tmax="+RRDFILE+":T:MAX",
-	 "DEF:Tmin="+RRDFILE+":T:MIN",
 	 "DEF:Dew="+RRDFILE+":Dew:AVERAGE",
-	 "LINE1:T#"+red+":Ambient Temperature",
-	 "HRULE:0#00FFFFAA:ZERO",
-	 "AREA:Dew#"+red+"40:Dew Point\\r",
-	 "COMMENT:\\n",
-	 "GPRINT:T:AVERAGE:Avg Temp\: %6.2lf %S\\r")
-
-	ret = rrdtool.graph( CHARTPATH+"alltemp"+str(time)+".png","-A","--start","-"+str(time)+"h","-E",
-          preamble,
-	 "--title","Temperature",
-	 "--vertical-label=Celsius ºC",
-	 "DEF:IR="+RRDFILE+":IR:AVERAGE",
-	 "DEF:Thr="+RRDFILE+":Thr:AVERAGE",
-	 "DEF:Tp="+RRDFILE+":Tp:AVERAGE",
-	 "DEF:Tir="+RRDFILE+":Tir:AVERAGE",
-	 "DEF:Dew="+RRDFILE+":Dew:AVERAGE",
-	 "LINE1:IR#00F0F0:IR",
-	 "LINE1:Thr#00FF00:Thr",
-	 "LINE1:Tp#FF0000:Tp",
-	 "LINE1:Tir#0000FF:Tir",
-	 "HRULE:0#00FFFFAA:ZERO",
-	 "AREA:Dew#00008F10:Dew\\r")
-
+         "COMMENT:\\t\\t\\tCurrent\:\\t  Min\:\\t\\t  Max\:\\n",
+         "LINE1:T#"+red+":Ambient Temperature",
+         "GPRINT:T:LAST:    %3.2lf",
+         "GPRINT:T:MIN:\\t%3.2lf",
+         "GPRINT:T:MAX:\\t  %3.2lf\\n",
+	 "AREA:Dew#"+red+"40:Dew Point",
+         "GPRINT:Dew:LAST:\\t      %3.2lf",
+         "GPRINT:Dew:MIN:\\t%3.2lf",
+         "GPRINT:Dew:MAX:\\t  %3.2lf\\n",
+	 "HRULE:0#00FFFFAA:ZERO\\n"
+        )
 
 	ret = rrdtool.graph( CHARTPATH+"pressure"+str(time)+".png","-A","--start","-"+str(time)+"h","-E",
           preamble,
-	 "--title","Pressure",
-	 "--vertical-label=mBars",
+	 "--title","Air Pressure",
+	 "--vertical-label=mBar",
 	 "-u",str(Pmax),
 	 "-l",str(Pmin),
 	 "-r",
 	 "DEF:P="+RRDFILE+":P:AVERAGE",
-	 "HRULE:"+str(P0)+"#"+red+"AA:standard",
-	 "LINE1:P#"+blue+":P\\r",
-	 "COMMENT:\\n",
-	 "GPRINT:P:AVERAGE:Avg P\: %6.2lf %S\\r")
+         "COMMENT:\\t\\t\\tCurrent\:\\t  Min\:\\t\\t  Max\:\\n",
+	 "LINE1:P#"+blue+":Air Pressure",
+         "GPRINT:P:LAST:\\t %3.2lf",
+         "GPRINT:P:MIN:      %3.2lf",
+         "GPRINT:P:MAX:\\t%3.2lf\\n",
+	 "HRULE:"+str(P0)+"#"+red+"AA:Standard"
+        )
 
 	ret = rrdtool.graph( CHARTPATH+"hr"+str(time)+".png","--start","-"+str(time)+"h","-E",
           preamble,
@@ -91,20 +81,24 @@ def graphs(time):
 	 "--title","Humidity",
 	 "--vertical-label=%",
 	 "DEF:HR="+RRDFILE+":HR:AVERAGE",
-	 "HRULE:100#FF00FFAA:100%",
-	 "HRULE:0#00FFFFAA:0%",
-	 "LINE1:HR#"+blue+":HR\\r",
-	 "COMMENT:\\n",
-	 "GPRINT:HR:AVERAGE:Avg HR\: %6.2lf %S\\r")
+         "COMMENT:\\t\\tCurrent\:\\t   Min\:\\t\\t   Max\:\\n",
+	 "LINE1:HR#"+blue+":Humidity",
+         "GPRINT:HR:LAST:      %3.2lf",
+         "GPRINT:HR:MIN:\\t%3.2lf",
+         "GPRINT:HR:MAX:\\t %3.2lf\\n",
+	 "HRULE:100#FF00FFAA:100%\\n",
+	 "HRULE:0#00FFFFAA:0%")
 
 	ret = rrdtool.graph( CHARTPATH+"light"+str(time)+".png","--start","-"+str(time)+"h","-E",
           preamble,
 	 "--title","Sky Quality (SQM)",
 	 "--vertical-label=mag/arcs^2",
 	 "DEF:Light="+RRDFILE+":Light:AVERAGE",
-	 "LINE1:Light#"+blue+":SQM\\r",
-	 "COMMENT:\\n",
-	 "GPRINT:Light:AVERAGE:Avg Light\: %6.2lf %S\\r")
+         "COMMENT:\\t\\tCurrent\:\\t   Min\:\\t\\t    Max\:\\n",
+         "LINE1:Light#"+blue+":SQM",
+         "GPRINT:Light:LAST:\\t    %3.2lf",
+         "GPRINT:Light:MIN:\\t%3.2lf",
+         "GPRINT:Light:MAX:\\t %3.2lf\\n")
 
 	ret = rrdtool.graph( CHARTPATH+"clouds"+str(time)+".png","-A","--start","-"+str(time)+"h","-E",
           preamble,
@@ -116,38 +110,53 @@ def graphs(time):
 	 "DEF:clouds="+RRDFILE+":clouds:AVERAGE",
 	 "DEF:cloudFlag="+RRDFILE+":cloudFlag:AVERAGE",
 	 "CDEF:cloudy=clouds,cloudFlag,*",
+         "COMMENT:\\t\\tCurrent\:\\t   Min\:\\t\\t    Max\:\\n",
 	 "LINE1:clouds#"+orange+":clouds",
-	 "AREA:cloudy#FFFFFF40:CloudyFlag\\r",
-	 "AREA:30#00000a40:Clear",
-	 "AREA:40#0000AA40:Cloudy:STACK",
+         "GPRINT:clouds:LAST:\\t%3.2lf",
+         "GPRINT:clouds:MIN:\\t%3.2lf",
+         "GPRINT:clouds:MAX:\\t %3.2lf\\n",
+	 "AREA:cloudy#FFFFFF40:CloudyFlag\\n",
+	 "AREA:30#00000a40:Clear\\n",
+	 "AREA:40#0000AA40:Cloudy\\n:STACK",
 	 "AREA:32#0000FF40:Overcast:STACK")
 
 	ret = rrdtool.graph( CHARTPATH+"skyT"+str(time)+".png","--start","-"+str(time)+"h","-E",
           preamble,
 	 "--title","Sky Temperatures",
-	 "--vertical-label=Celsius ºC",
+	 "--vertical-label=Celsius C",
 	 "DEF:skyT="+RRDFILE+":skyT:AVERAGE",
 	 "DEF:IR="+RRDFILE+":IR:AVERAGE",
 	 "DEF:Thr="+RRDFILE+":Thr:AVERAGE",
 	 "CDEF:Tc=IR,skyT,-",
+         "COMMENT:\\t\\t\\tCurrent\:\\t   Min\:\\t\\t  Max\:\\n",
 	 "LINE1:skyT#"+blue+":Corrected Sky T",
+         "GPRINT:skyT:LAST:\\t%3.2lf",
+         "GPRINT:skyT:MIN:\\t%3.2lf",
+         "GPRINT:skyT:MAX:\\t %3.2lf\\n",
 	 "LINE1:IR#"+orange+":Actual Sky T",
+         "GPRINT:IR:LAST:\\t   %3.2lf",
+         "GPRINT:IR:MIN:\\t %3.2lf",
+         "GPRINT:IR:MAX:\\t %3.2lf\\n",
 	 "LINE1:Thr#"+red+":Ambient T",
+         "GPRINT:Thr:LAST:\\t      %3.2lf",
+         "GPRINT:Thr:MIN:\\t %3.2lf",
+         "GPRINT:Thr:MAX:\\t %3.2lf\\n",
 	 "LINE1:Tc#"+white+":Correction",
-	 "HRULE:0#00FFFFAA:ZERO",
-	 "COMMENT:\\n",
-	 "GPRINT:skyT:AVERAGE:Avg Sky Temp\: %6.2lf %S\\r")
+         "GPRINT:Tc:LAST:\\t     %3.2lf",
+         "GPRINT:Tc:MIN:\\t %3.2lf",
+         "GPRINT:Tc:MAX:\\t %3.2lf\\n",
+	 "HRULE:0#00FFFFAA:ZERO")
 
 
 def recv_indi(indi):
 	tim=time.localtime()
         vectorHR=indi.get_vector(INDIDEVICE,SENSOR_HUMIDITY)
 	HR=vectorHR.get_element(SENSOR_HUMIDITY_HUM).get_float()
-	Thr=vectorHR.get_element(SENSOR_HUMIDITY_TEMP).get_float()
+        Thr=vectorHR.get_element(SENSOR_HUMIDITY_TEMP).get_float()
 
         vectorPressure=indi.get_vector(INDIDEVICE, SENSOR_PRESSURE)
 	P=vectorPressure.get_element(SENSOR_PRESSURE_PRES).get_float()
-	Tp=vectorPressure.get_element(SENSOR_PRESSURE_TEMP).get_float()
+        Tp=vectorPressure.get_element(SENSOR_PRESSURE_TEMP).get_float()
 
         vectorIR=indi.get_vector(INDIDEVICE, SENSOR_IR)
 	IR=vectorIR.get_element(SENSOR_IR_IR).get_float()
@@ -163,11 +172,14 @@ def recv_indi(indi):
 	sqm=vectorSQM.get_element(WEATHER_SQM_SQM).get_float()
    
         statusVector=indi.get_vector(INDIDEVICE, WEATHER_STATUS)
-	cloudFlag=int(statusVector.get_element(WEATHER_STATUS_CLOUDS).is_alert())
-	dewFlag=int(statusVector.get_element(WEATHER_STATUS_DEW).is_alert())
-	frezzingFlag=int(statusVector.get_element(WEATHER_STATUS_TEMP).is_alert())
+        cloudFlag=int(not (statusVector.get_element(WEATHER_STATUS_CLOUDS).is_ok() or
+                           statusVector.get_element(WEATHER_STATUS_CLOUDS).is_idle()))
+        dewFlag=int(not (statusVector.get_element(WEATHER_STATUS_DEW).is_ok() or
+                         statusVector.get_element(WEATHER_STATUS_DEW).is_idle()))
+        frezzingFlag=int(not (statusVector.get_element(WEATHER_STATUS_TEMP).is_ok() or
+                              statusVector.get_element(WEATHER_STATUS_TEMP).is_idle()))
   
-	return (("HR",HR),("Thr",Thr),("IR",IR),("Tir",Tir),("P",P),("Tp",Tp),("Dew",dew),("SQM",sqm),
+        return (("HR",HR),("Thr",Thr),("IR",IR),("Tir",Tir),("P",P),("Tp",Tp),("Dew",dew),("SQM",sqm),
            ("T",T),("clouds",clouds),("skyT",skyT),("cloudFlag",cloudFlag),("dewFlag",dewFlag),
            ("frezzingFlag",frezzingFlag))
 
