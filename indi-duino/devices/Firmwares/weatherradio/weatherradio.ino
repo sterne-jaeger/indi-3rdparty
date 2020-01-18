@@ -34,6 +34,7 @@ void setup() {
 void sendSensorData() {
   const int docSize = JSON_OBJECT_SIZE(4) + // max 4 sensors
                       JSON_OBJECT_SIZE(4) + // BME280 sensor
+                      JSON_OBJECT_SIZE(3) + // PMP085 sensor
                       JSON_OBJECT_SIZE(3) + // DHT sensors
                       JSON_OBJECT_SIZE(3) + // MLX90614 sensor
                       JSON_OBJECT_SIZE(6);  // TSL2591 sensor
