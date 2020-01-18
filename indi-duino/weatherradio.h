@@ -59,6 +59,9 @@ protected:
     // firmware info
     ITextVectorProperty FirmwareInfoTP;
     IText FirmwareInfoT[1] = {};
+    // sky temperature correction calculation
+    INumberVectorProperty SkyTemperatureConfigNP;
+    INumber SkyTemperatureConfigN[5];
 
     /**
      * @brief Read the weather data from the JSON document

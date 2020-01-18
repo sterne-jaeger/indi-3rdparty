@@ -122,6 +122,13 @@ bool WeatherRadio::initProperties()
     IUFillText(&FirmwareInfoT[0], "FIRMWARE_INFO", "Firmware Version", "<unknown version>");
     IUFillTextVector(&FirmwareInfoTP, FirmwareInfoT, 1, getDeviceName(), "FIRMWARE", "Firmware", INFO_TAB, IP_RO, 60, IPS_OK);
 
+    IUFillNumber(&SkyTemperatureConfigN[0], "SkyTemperatureConfigK1", "K1", "%3.2f", 0.0, 100.0, 1.0, 33.0);
+    IUFillNumber(&SkyTemperatureConfigN[1], "SkyTemperatureConfigK2", "K2", "%3.2f", 0.0, 100.0, 1.0, 0.0);
+    IUFillNumber(&SkyTemperatureConfigN[2], "SkyTemperatureConfigK3", "K3", "%3.2f", 0.0, 100.0, 1.0, 4.0);
+    IUFillNumber(&SkyTemperatureConfigN[3], "SkyTemperatureConfigK4", "K4", "%3.2f", 0.0, 999.0, 1.0, 100.0);
+    IUFillNumber(&SkyTemperatureConfigN[4], "SkyTemperatureConfigK5", "K5", "%3.2f", 0.0, 999.0, 1.0, 100.0);
+    IUFillNumberVector(&SkyTemperatureConfigNP, SkyTemperatureConfigN, 5, getDeviceName(), "SkyTemperatureConfig", "Sky Temp. Correction", "Parameters", IP_RW, 60, IPS_OK);
+
     addParameter(WEATHER_TEMPERATURE, "Temperature (°C)", -10, 30, 15);
     addParameter(WEATHER_PRESSURE, "Pressure (hPa)", 950, 1070, 15);
     addParameter(WEATHER_HUMIDITY, "Humidity (%)", 0, 100, 15);
@@ -177,6 +184,8 @@ bool WeatherRadio::updateProperties()
         addSensorSelection(&ambientTemperatureSensorSP, sensorRegistry.temperature, "AMBIENT_TEMP_SENSOR", "Ambient Temp. Sensor");
         addSensorSelection(&objectTemperatureSensorSP, sensorRegistry.temp_object, "OBJECT_TEMP_SENSOR", "Object Temp. Sensor");
 
+        defineNumber(&SkyTemperatureConfigNP);
+
         IPState result = updateWeather();
         return (result == IPS_OK);
     }
@@ -192,6 +201,8 @@ bool WeatherRadio::updateProperties()
         deleteProperty(ambientTemperatureSensorSP.name);
         deleteProperty(objectTemperatureSensorSP.name);
         deleteProperty(FirmwareInfoTP.name);
+        deleteProperty(SkyTemperatureConfigNP.name);
+
     }
 
     // Load the configuration.
@@ -300,6 +311,13 @@ bool WeatherRadio::ISNewText(const char *dev, const char *name, char *texts[], c
 ***************************************************************************************/
 bool WeatherRadio::ISNewNumber(const char *dev, const char *name, double values[], char *names[], int n)
 {
+    if (strcmp(name, SkyTemperatureConfigNP.name) == 0)
+    {
+        IUUpdateNumber(&SkyTemperatureConfigNP, values, names, n);
+        SkyTemperatureConfigNP.s = IPS_OK;
+        IDSetNumber(&SkyTemperatureConfigNP, nullptr);
+        return IPS_OK;
+    }
     return INDI::Weather::ISNewNumber(dev, name, values, names, n);
 }
 
@@ -565,8 +583,10 @@ void WeatherRadio::updateWeatherParameter(WeatherRadio::sensor_name sensor, doub
         if (objProp != nullptr)
         {
             double objectTemperature = objProp->value;
-            setParameterValue(WEATHER_CLOUD_COVER, WeatherCalculator::cloudCoverage(value, objectTemperature));
-            setParameterValue(WEATHER_SKY_TEMPERATURE, WeatherCalculator::skyTemperatureCorr(value, objectTemperature));
+            setParameterValue(WEATHER_CLOUD_COVER, WeatherCalculator::cloudCoverage(value, objectTemperature, SkyTemperatureConfigN[0].value,
+                               SkyTemperatureConfigN[1].value,  SkyTemperatureConfigN[2].value, SkyTemperatureConfigN[3].value,  SkyTemperatureConfigN[4].value));
+            setParameterValue(WEATHER_SKY_TEMPERATURE, WeatherCalculator::skyTemperatureCorr(value, objectTemperature, SkyTemperatureConfigN[0].value,
+                              SkyTemperatureConfigN[1].value,  SkyTemperatureConfigN[2].value, SkyTemperatureConfigN[3].value,  SkyTemperatureConfigN[4].value));
         }
     }
     else if (currentSensors.temp_object == sensor)
@@ -576,8 +596,10 @@ void WeatherRadio::updateWeatherParameter(WeatherRadio::sensor_name sensor, doub
         if (ambientProp != nullptr)
         {
             double ambientTemperature = ambientProp->value;
-            setParameterValue(WEATHER_CLOUD_COVER, WeatherCalculator::cloudCoverage(ambientTemperature, value));
-            setParameterValue(WEATHER_SKY_TEMPERATURE, WeatherCalculator::skyTemperatureCorr(ambientTemperature, value));
+            setParameterValue(WEATHER_CLOUD_COVER, WeatherCalculator::cloudCoverage(ambientTemperature, value, SkyTemperatureConfigN[0].value,
+                              SkyTemperatureConfigN[1].value,  SkyTemperatureConfigN[2].value, SkyTemperatureConfigN[3].value,  SkyTemperatureConfigN[4].value));
+            setParameterValue(WEATHER_SKY_TEMPERATURE, WeatherCalculator::skyTemperatureCorr(ambientTemperature, value,  SkyTemperatureConfigN[0].value,
+                              SkyTemperatureConfigN[1].value,  SkyTemperatureConfigN[2].value, SkyTemperatureConfigN[3].value,  SkyTemperatureConfigN[4].value));
         }
     }
     else if (currentSensors.luminosity == sensor)
@@ -627,6 +649,7 @@ bool WeatherRadio::saveConfigItems(FILE *fp)
     IUSaveConfigSwitch(fp, &ambientTemperatureSensorSP);
     IUSaveConfigSwitch(fp, &objectTemperatureSensorSP);
     IUSaveConfigNumber(fp, ParametersRangeNP);
+    IUSaveConfigNumber(fp, &SkyTemperatureConfigNP);
 
     return INDI::Weather::saveConfigItems(fp);
 }

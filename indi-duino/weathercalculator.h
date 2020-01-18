@@ -41,9 +41,9 @@ public:
      * The original formula stems from the AAG cloud watcher http://lunatico.es/aagcw/enhelp/
      * and the INDI driver indi_aagcloudwatcher.cpp.
      */
-    static double cloudCoverage(double ambientTemperature, double skyTemperature)
+    static double cloudCoverage(double ambientTemperature, double skyTemperature, double k1, double k2, double k3, double k4, double k5)
     {
-        double correctedTemperature = skyTemperatureCorr(ambientTemperature, skyTemperature);
+        double correctedTemperature = skyTemperatureCorr(ambientTemperature, skyTemperature, k1, k2, k3, k4, k5);
 
 
         if (correctedTemperature < CLOUD_TEMP_CLEAR) correctedTemperature = CLOUD_TEMP_CLEAR;
@@ -87,11 +87,8 @@ public:
      * The original formula stems from the AAG cloud watcher http://lunatico.es/aagcw/enhelp/
      * and the INDI driver indi_aagcloudwatcher.cpp.
      */
-    static double skyTemperatureCorr(double ambientTemperature, double skyTemperature)
+    static double skyTemperatureCorr(double ambientTemperature, double skyTemperature, double k1, double k2, double k3, double k4, double k5)
     {
-        // FIXME: make the parameters k1 .. k5 configurable
-        double k1 = 33.0, k2 = 0.0,  k3 = 4.0, k4 = 100.0, k5 = 100.0;
-
         double correctedTemperature =
             skyTemperature - ((k1 / 100.0) * (ambientTemperature - k2 / 10.0) +
                               (k3 / 100.0) * pow(exp(k4 / 1000. * ambientTemperature), (k5 / 100.0)));
