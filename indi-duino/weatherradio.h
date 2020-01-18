@@ -48,7 +48,7 @@ protected:
     virtual bool updateProperties() override;
 
     // Initial function to get data after connection is successful
-    void getBasicData();
+    IPState getBasicData();
 
     ISwitchVectorProperty temperatureSensorSP, ambientTemperatureSensorSP, objectTemperatureSensorSP, pressureSensorSP, humiditySensorSP, luminositySensorSP;
 

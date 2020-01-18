@@ -43,7 +43,7 @@
 std::unique_ptr<WeatherRadio> station_ptr(new WeatherRadio());
 
 #define MAX_WEATHERBUFFER 512
-#define MAX_WAIT 10
+#define MAX_WAIT 2 // two seconds timeout on the serial device
 
 #define WEATHER_TEMPERATURE     "WEATHER_TEMPERATURE"
 #define WEATHER_PRESSURE        "WEATHER_PRESSURE"
@@ -175,7 +175,8 @@ bool WeatherRadio::updateProperties()
         addSensorSelection(&ambientTemperatureSensorSP, sensorRegistry.temperature, "AMBIENT_TEMP_SENSOR", "Ambient Temp. Sensor");
         addSensorSelection(&objectTemperatureSensorSP, sensorRegistry.temp_object, "OBJECT_TEMP_SENSOR", "Object Temp. Sensor");
 
-        getBasicData();
+        IPState result = updateWeather();
+        return (result == IPS_OK);
     }
     else
     {
@@ -200,15 +201,26 @@ bool WeatherRadio::updateProperties()
 /**************************************************************************************
 ** Retrieve basic data after a successful connect.
 ***************************************************************************************/
-void WeatherRadio::getBasicData()
+IPState WeatherRadio::getBasicData()
 {
     FirmwareInfoT[0].text = new char[64];
-    FirmwareInfoTP.s = getFirmwareVersion(FirmwareInfoT[0].text);
-    if (FirmwareInfoTP.s != IPS_OK)
-        LOG_ERROR("Failed to get firmware from device.");
 
-    defineText(&FirmwareInfoTP);
+    // try at most ten times
+    for (int i = 0; i < 10; i++)
+    {
+        FirmwareInfoTP.s = getFirmwareVersion(FirmwareInfoT[0].text);
+        if (FirmwareInfoTP.s == IPS_OK)
+            break;
+    }
+    if (FirmwareInfoTP.s != IPS_OK)
+    {
+        LOG_ERROR("Failed to get firmware from device.");
+    }
+    else
+        defineText(&FirmwareInfoTP);
+
     IDSetText(&FirmwareInfoTP, nullptr);
+    return FirmwareInfoTP.s;
 }
 
 /**************************************************************************************
@@ -381,7 +393,7 @@ bool WeatherRadio::ISNewBLOB(const char *dev, const char *name, int sizes[], int
 ***************************************************************************************/
 bool WeatherRadio::Handshake()
 {
-    IPState result = updateWeather();
+    bool result = getBasicData();
 
     return result == IPS_OK;
 }
