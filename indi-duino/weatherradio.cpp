@@ -43,7 +43,7 @@
 std::unique_ptr<WeatherRadio> station_ptr(new WeatherRadio());
 
 #define MAX_WEATHERBUFFER 512
-#define MAX_WAIT 2
+#define MAX_WAIT 10
 
 #define WEATHER_TEMPERATURE     "WEATHER_TEMPERATURE"
 #define WEATHER_PRESSURE        "WEATHER_PRESSURE"

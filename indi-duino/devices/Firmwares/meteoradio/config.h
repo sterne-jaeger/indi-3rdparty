@@ -11,6 +11,7 @@
 */
 
 #define USE_BME_SENSOR            // USE BME280 ENVIRONMENT SENSOR. Comment if not.
+#define USE_BMP_SENSOR            //USE BMP085 PRESSURE SENSOR. Comment if not.
 #define USE_DHT_SENSOR            // USE DHT HUMITITY SENSOR. Comment if not.
                                   // HINT: Edit dht.h for sensor specifics
 #define USE_MLX_SENSOR            //USE MELEXIS IR SENSOR. Comment if not.
@@ -23,6 +24,10 @@
 #ifdef USE_BME_SENSOR
 #include "bme280.h"
 #endif //USE_BME_SENSOR
+
+#ifdef USE_BMP_SENSOR
+#include "bmp085.h"
+#endif //USE_BMP_SENSOR
 
 #ifdef USE_DHT_SENSOR
 #include "dht.h"

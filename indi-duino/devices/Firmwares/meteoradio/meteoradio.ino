@@ -44,6 +44,11 @@ void sendSensorData() {
   serializeBME(weatherDoc);
 #endif //USE_BME_SENSOR
 
+#ifdef USE_BMP_SENSOR
+  updateBMP();
+  serializeBMP(weatherDoc);
+#endif //USE_BMP_SENSOR
+
 #ifdef USE_DHT_SENSOR
   updateDHT();
   serializeDHT(weatherDoc);
