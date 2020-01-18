@@ -16,6 +16,8 @@ IFS='%'
 #by defining INDISERVER as localhost,
 #and leaving INDITUNNEL="false",
 #then indiserver will be started locally on port INDIPORT
+#INDISERVER="rasp-indi"
+#INDISERVER="rasp-weather"
 INDISERVER="localhost"
 INDITUNNEL="false"
 INDISTARTREMOTE="false"
@@ -61,13 +63,15 @@ INDIPORT="7624"
 
 ##### INDI SETTINGS AND DEBUG #####
 #1). Basic indi
-INDIDEVICE="Arduino MeteoStation"
+#INDIDEVICE="Arduino MeteoStation"
+INDIDEVICE="Weather Radio"
+#INDIDEVICEPORT="/dev/ttyACM0"
 INDIDEVICEPORT="/dev/ttyUSB0"
 
 #2). Debug
 #Swap for indi output
-EXECNOOUTPUT="&>/dev/null"
-#EXECNOOUTPUT=""
+#EXECNOOUTPUT="&>/dev/null"
+EXECNOOUTPUT=""
 #Uncomment for verbose output. ' -v', ' -vv' and ' -vvv' is valid
 #INDIVERBOSE=" -vv"
 
@@ -81,10 +85,11 @@ SSHUSERNAME="magnus_e"
 
 #2). Indi startup
 INDIFIFODIR="/tmp/INDIFIFO"
-METEOSTATIONSKELETONDIR="/usr/local/share/indi/meteostation_sk.xml"
+METEOSTATIONSKELETONDIR="/usr/share/indi/meteostationSQM_sk.xml"
 KILLEXEC="killall indiserver"
 INDIEXEC="indiserver$INDIVERBOSE -f $INDIFIFODIR -p"
-DUINOEXEC="echo start indi_duino -n \\\"$INDIDEVICE\\\" -s \\\"$METEOSTATIONSKELETONDIR\\\" > $INDIFIFODIR"
+#DUINOEXEC="echo start indi_duino -n \\\"$INDIDEVICE\\\" -s \\\"$METEOSTATIONSKELETONDIR\\\" > $INDIFIFODIR"
+DUINOEXEC="echo start indi_weatherradio -n \\\"$INDIDEVICE\\\" > $INDIFIFODIR"
 
 #3). Local exec
 INDILOCALEXEC="$KILLEXEC; rm $INDIFIFODIR; mkfifo $INDIFIFODIR; $INDIEXEC $INDIPORT & $DUINOEXEC"
@@ -110,44 +115,67 @@ INDIREMOTEEXEC="$SSH -fN -o ExitOnForwardFailure=yes $SSHTUNNEL"
 UPDATE="cron"
 
 ##### SITE RELATED ####
-OWNERNAME="Magnus W. Eriksen"
-SITENAME="Observatory17b.com"
-ALTITUDE=10
+OWNERNAME="Sterne-Jäger"
+SITENAME="Hessental LG10"
+ALTITUDE=380
 #Visit http://weather.uwyo.edu/upperair/sounding.html
 #See the sounding location close your site
-SOUNDINGSTATION="ENZV"
+SOUNDINGSTATION="10739"
 
 ##### RRD RELATED #####
 #PATH TO GRAPHs
-CHARTPATH="./html/CHART/"
-RRDFILE="./meteo.rrd"
+CHARTPATH="/usr/local/share/meteoweb/html/CHART/"
+RRDFILE="/usr/local/share/meteoweb/meteo.rrd"
 #EUMETSAT lastimagen. Choose one from:
 #http://oiswww.eumetsat.org/IPPS/html/latestImages.html
 #This is nice but only work at daylight time:
 #EUMETSAT_LAST="http://oiswww.eumetsat.org/IPPS/html/latestImages/EUMETSAT_MSG_RGBNatColour_WesternEurope.jpg"
 #This show rain
-EUMETSAT_LAST="http://oiswww.eumetsat.org/IPPS/html/latestImages/EUMETSAT_MSG_MPE_WesternEurope.png"
+EUMETSAT_LAST="https://eumetview.eumetsat.int/static-images/latestImages/EUMETSAT_MSGIODC_MPE_Europe.png"
 #and this cloud cover at IR 39. Work at night
 #EUMETSAT_LAST="http://oiswww.eumetsat.org/IPPS/html/latestImages/EUMETSAT_MSG_IR039_WesternEurope.jpg"
 
 ######### INDI Weather vector and element names
-SENSOR_HUMIDITY="Humidity"
-SENSOR_HUMIDITY_HUM="HR"
-SENSOR_HUMIDITY_TEMP="T"
-SENSOR_PRESSURE="Pressure"
-SENSOR_PRESSURE_PRES="P"
-SENSOR_PRESSURE_TEMP="T"
-SENSOR_IR="IR"
-SENSOR_IR_IR="IR"
-SENSOR_IR_TEMP="T"
+# SENSOR_HUMIDITY="Humidity"
+# SENSOR_HUMIDITY_HUM="HR"
+# SENSOR_HUMIDITY_TEMP="T"
+# SENSOR_PRESSURE="Pressure"
+# SENSOR_PRESSURE_PRES="P"
+# SENSOR_PRESSURE_TEMP="T"
+# SENSOR_IR="IR"
+# SENSOR_IR_IR="IR"
+# SENSOR_IR_TEMP="T"
+# WEATHER="WEATHER_PARAMETERS"
+# WEATHER_DEWPOINT="WEATHER_DEWPOINT"
+# WEATHER_CLOUDS="WEATHER_CLOUD_COVER"
+# WEATHER_TEMP="WEATHER_TEMPERATURE"
+# WEATHER_SKY_TEMP="WEATHER_SKY_TEMPERATURE"
+# WEATHER_SQM="Sky Quality"
+# WEATHER_SQM_SQM="SQM"
+# WEATHER_STATUS="WEATHER_STATUS"
+# WEATHER_STATUS_CLOUDS="clouds"
+# WEATHER_STATUS_DEW="dew"
+# WEATHER_STATUS_TEMP="frezzing"
+
+######### INDI Weather vector and element names
+SENSOR_HUMIDITY="BME280"
+SENSOR_HUMIDITY_HUM="Hum"
+SENSOR_HUMIDITY_TEMP="Temp"
+SENSOR_PRESSURE="BME280"
+SENSOR_PRESSURE_PRES="Pres"
+SENSOR_PRESSURE_TEMP="Temp"
+SENSOR_IR="MLX90614"
+SENSOR_IR_IR="T obj"
+SENSOR_IR_TEMP="T amb"
 WEATHER="WEATHER_PARAMETERS"
 WEATHER_DEWPOINT="WEATHER_DEWPOINT"
 WEATHER_CLOUDS="WEATHER_CLOUD_COVER"
 WEATHER_TEMP="WEATHER_TEMPERATURE"
 WEATHER_SKY_TEMP="WEATHER_SKY_TEMPERATURE"
-WEATHER_SQM="Sky Quality"
-WEATHER_SQM_SQM="SQM"
+WEATHER_SQM="WEATHER_PARAMETERS"
+WEATHER_SQM_SQM="WEATHER_SQM"
 WEATHER_STATUS="WEATHER_STATUS"
-WEATHER_STATUS_CLOUDS="clouds"
-WEATHER_STATUS_DEW="dew"
-WEATHER_STATUS_TEMP="frezzing"
+WEATHER_STATUS_CLOUDS="WEATHER_CLOUD_COVER"
+WEATHER_STATUS_DEW="WEATHER_HUMIDITY"
+WEATHER_STATUS_TEMP="WEATHER_TEMPERATURE"
+

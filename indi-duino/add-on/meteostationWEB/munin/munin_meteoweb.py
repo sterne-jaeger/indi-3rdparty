@@ -11,7 +11,7 @@ from indiclient import *
 # ===========================================================================
 
 # ======================== INDI server configuration ========================
-INDISERVER="localhost"
+INDISERVER="rasp-star"
 INDIPORT="7624"
 INDIDEVICE="Arduino MeteoStation"
 # ======================== INDI server configuration ========================
@@ -111,4 +111,3 @@ def readData():
     weatherStatus.update(getWeatherStatus(indi))
 
     indi.quit()
-
