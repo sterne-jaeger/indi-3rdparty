@@ -1,8 +1,11 @@
-function weatherChart(lastValue, category, series) {
+function weatherChart(lastValue, category, align, series) {
+
+    var offsetX = (align == 'left') ? 30 : 0;
     var chart = {
 	height: 300,
 	width: "95%",
 	type: "area",
+	toolbar: {show: false},
 	animations: {
 	    initialAnimation: {
 		enabled: false
@@ -11,12 +14,14 @@ function weatherChart(lastValue, category, series) {
     };
     var title = {
 	text: lastValue,
-	offsetX: 30,
+	align: align,
+	offsetX: offsetX,
 	style: {fontSize: '24px', color: '#ccc'}
     };
     var subtitle = {
 	text: category,
-	offsetX: 30,
+	align: align,
+	offsetX: offsetX,
 	style: {fontSize: '16px', color: '#ccc'}
     };
 
@@ -29,15 +34,28 @@ function weatherChart(lastValue, category, series) {
 	    series: series};
 }
 
-var hchart = new ApexCharts(document.querySelector("#humidity"),
-			    weatherChart('52%', 'Humidity', seriesHumidity));
-hchart.render();
-var cchart = new ApexCharts(document.querySelector("#clouds"),
-			    weatherChart('17%', 'Cloud Coverage', seriesCloudCoverage));
-cchart.render();
-var tchart = new ApexCharts(document.querySelector("#temperature"),
-			    weatherChart('5.2°C', 'Temperature', seriesHumidity));
-tchart.render();
-var pchart = new ApexCharts(document.querySelector("#pressure"),
-			    weatherChart('1024.2 hPa', 'Pressure', seriesCloudCoverage));
-pchart.render();
+function init() {
+
+    $.get("CHART/RTdata.json", function(data) {
+	var hchart = new ApexCharts(document.querySelector("#humidity"),
+				    weatherChart(data.HR + "%",
+						 'Humidity', 'left',
+						 seriesHumidity));
+	hchart.render();
+	var cchart = new ApexCharts(document.querySelector("#clouds"),
+				    weatherChart(data.clouds + "%",
+						 'Cloud Coverage', 'right',
+						 seriesCloudCoverage));
+	cchart.render();
+	var tchart = new ApexCharts(document.querySelector("#temperature"),
+				    weatherChart(data.T + "°C",
+						 'Temperature', 'left',
+						 seriesHumidity));
+	tchart.render();
+	var pchart = new ApexCharts(document.querySelector("#pressure"),
+				    weatherChart(data.P + " hPa",
+						 'Pressure', 'right',
+						 seriesCloudCoverage));
+	pchart.render();
+    });
+};
