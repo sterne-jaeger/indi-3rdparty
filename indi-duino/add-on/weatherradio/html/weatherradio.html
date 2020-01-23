@@ -12,44 +12,21 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/apexcharts.js"></script>
   </head>
-  <body onload=init()>
+  <body>
     <div class="container-fluid">
       <h1 style="text-align: center; padding-top: 20px">Weather Radio</h1>
       <div class="row">
-	<div class="col card weatherbox">
-	  <div class="card-body"><h1 id="Temperature"></h1>°C</div> 
-	  <div class="card-footer">Temperature</div>
-	</div>
-	<div class="col card weatherbox">
-	  <div class="card-body"><h1 id="Pressure"></h1>hPa</div> 
-	  <div class="card-footer">Pressure</div>
-	</div>
-	<div class="col card weatherbox">
-	  <div class="card-body"><h1 id="Humidity"></h1>%</div>
-	  <div class="card-footer">Humidity</div>
-	</div>
-	<div class="col card weatherbox">
-	  <div class="card-body"><h1 id="CloudCoverage"></h1>%</div>
-	  <div class="card-footer">Cloud coverage</div>
-	</div>
-      </div>
+	<div class="col" id="temperature"></div>
+	<div class="col" id="pressure"></div>
+      </div> <!-- first row end -->
+      <div class="row">
+	<div class="col" id="humidity"></div>
+	<div class="col" id="clouds"></div>
+      </div> <!-- second row end -->
     </div>
+    <script src="js/data.js"></script>
+    <script src="js/charts.js"></script>
   </body>
-  <script>
-
-    function init()
-    {
-
-    $.get("CHART/RTdata.json", function(data) {
-    document.getElementById("Temperature").innerHTML = (data.T).toFixed(1);
-    document.getElementById("Pressure").innerHTML = (data.P).toFixed(1);
-    document.getElementById("Humidity").innerHTML = (data.HR).toFixed(1);
-    document.getElementById("CloudCoverage").innerHTML = (data.clouds).toFixed(1);
-    })
-
-
-    }    
-
-  </script>
 </html>
