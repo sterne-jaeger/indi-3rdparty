@@ -18,7 +18,7 @@
 #include <math.h>
 
 #define WINDSPEEDPIN (2)    // The digital pin for the wind speed sensor
-#define WINDDIRECTIONPIN A2 // The analog pin for the wind direction
+#define WINDDIRECTIONPIN A0 // The analog pin for the wind direction
 #define WINDOFFSET 0;       // anemometer arm direction (0=N, 90=E, ...)
 
 #define SLICEDURATION 5000 // interval for a single speed mesure
