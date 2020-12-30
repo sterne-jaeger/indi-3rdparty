@@ -22,33 +22,41 @@ INDIPORT="7624"
 # configure INDI devices - separate multiple devices with ","
 
 # INDI device name
-INDIDEVICE="Weather Radio"
+#INDIDEVICE="Weather Radio"
+INDIDEVICE="Weather Radio,Davis Weather"
 # INDI device connection mode: "Ethernet" or "Serial"
-INDIDEVICEMODE="Serial"
+#INDIDEVICEMODE="Ethernet"
+INDIDEVICEMODE="Ethernet,Ethernet"
 # INDI serial device port (only necessary for Serial mode)
-INDIDEVICEPORT="/dev/ttyUSB0"
+#INDIDEVICEPORT="/dev/ttyUSB0"
+INDIDEVICEPORT="/dev/ttyUSB0,/dev/ttyUSB1"
 # INDI IP address (only necessary for Ethernet mode)
-INDI_IP_ADDRESS="172.28.4.40"
+#INDI_IP_ADDRESS="172.28.4.64"
+INDI_IP_ADDRESS="172.28.4.40,172.28.4.64"
 # INDI IP port (only necessary for Ethernet mode)
-INDI_IP_PORT="80"
+#INDI_IP_PORT="80"
+INDI_IP_PORT="80,80"
 # Geo Coordinates - Latitude (as decimal)
-GEO_COORD_LAT="43.916876"
+#GEO_COORD_LAT="49.1064"
+GEO_COORD_LAT="49.1064,49.1064"
 # Geo Coordinates - Longitude (as decimal)
-GEO_COORD_LONG="5.716624"
+#GEO_COORD_LONG="9.765"
+GEO_COORD_LONG="9.765,9.765"
 # Geo Coordinates - Elevation (as decimal)
-GEO_COORD_ELEV="650.0"
+#GEO_COORD_ELEV="375"
+GEO_COORD_ELEV="375,375"
 
 # RRD storage holding time series data
-RRDFILE="/usr/share/weatherradio/weather.rrd"
+RRDFILE="/usr/local/share/weatherradio/weather.rrd"
 
 # RRD storage holding time series for raw sensor data
-RRDSENSORSFILE="/usr/share/weatherradio/sensors.rrd"
+RRDSENSORSFILE="/usr/local/share/weatherradio/sensors.rrd"
 
 # path to the JSON files holding the data
-DATAPATH="/usr/share/weatherradio/html/data"
+DATAPATH="/usr/local/share/weatherradio/html/data"
 
 # path to the directory holding web cam images and videos
-MEDIADIR="/usr/share/weatherradio/html/media"
+MEDIADIR="/usr/local/share/weatherradio/html/media"
 
 ######### INDI Weather vector and element names
 WEATHER="WEATHER_PARAMETERS"
