@@ -559,7 +559,7 @@ bool PowerBox::executeCommand(PowerBox::pb_command cmd, std::string args)
         }
         // read the response lines
         bool result = receiveSerial(response, &length, '\n', getTTYTimeout());
-        if (result)
+        if (result && response[0] != '\0')
             handleResponse(cmd, response, length);
         else
         {
