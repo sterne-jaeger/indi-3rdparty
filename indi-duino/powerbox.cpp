@@ -301,6 +301,9 @@ bool PowerBox::saveConfigItems(FILE *fp)
     result &= INDI::DefaultDevice::saveConfigItems(fp);
     // remember the PWM port selection for the light port
     IUSaveConfigSwitch(fp, &LightBoxPWMPortSP);
+    // remember duty cycles
+    IUSaveConfigNumber(fp, &PWMDutyCycle_1_NP);
+    IUSaveConfigNumber(fp, &PWMDutyCycle_2_NP);
     return result;
 }
 
