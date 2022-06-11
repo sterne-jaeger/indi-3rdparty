@@ -26,6 +26,7 @@ endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h )
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/indi_duino.xml.cmake ${CMAKE_CURRENT_BINARY_DIR}/indi_duino.xml )
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/indi_duino_powerbox.xml.cmake ${CMAKE_CURRENT_BINARY_DIR}/indi_duino_powerbox.xml )
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/indi_weatherradio.xml.cmake ${CMAKE_CURRENT_BINARY_DIR}/indi_weatherradio.xml )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -94,6 +95,7 @@ add_executable(indi_duino_powerbox ${powerbox_SRCS})
 target_link_libraries(indi_duino_powerbox ${INDI_LIBRARIES} ${CURL})
 
 install(TARGETS indi_duino_powerbox RUNTIME DESTINATION bin)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/indi_duino_powerbox.xml DESTINATION ${INDI_DATA_DIR})
 ################### DEVICES XML  #####################
 add_subdirectory(devices)
 
